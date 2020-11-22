@@ -9,7 +9,7 @@ npm start
 
 # Window 2
 cd server
-npm install
+npm install 
 npm start
 
 Go to http://localhost:3000 for Event 1(To see available Slots and Book Free Slots).
