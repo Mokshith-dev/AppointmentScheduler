@@ -13,7 +13,7 @@ npm install
 npm start
 
 Go to http://localhost:3000 for Event 1(To see available Slots and Book Free Slots).
-Go to hhtp://localhost:3000/events for Event 2(To get events from a selected range of dates).
+Go to http://localhost:3000/events for Event 2(To get events from a selected range of dates).
 
 If you want to test using postman, use the following input format
 # Event 1:(PUT)
