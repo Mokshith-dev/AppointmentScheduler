@@ -2,9 +2,11 @@ const express = require("express");
 const app = express(); // for making apis
 app.use(express.json());
 
-const cors = require("cors"); // for making connection with frontend
 
+const cors = require("cors"); // for making connection with frontend
 app.use(cors());
+
+const PORT = process.env.PORT || 8080;
 
 const date = require("date-and-time"); // for performing operations on date and time
 
@@ -20,20 +22,24 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+
+
 //for testing coonection with react
-app.put("/api/v1/event/test", (req, res) => {
-  let resArr = [];
-  let rdate = date.format(new Date(req.body.date), "YYYY/M/D");
+app.get("/api/v1/event/test", (req, res) => {
+  // let resArr = [];
+  // let rdate = date.format(new Date(req.body.date), "YYYY/M/D");
 
-  let dur = req.body.duration;
+  // let dur = req.body.duration;
 
-  let z = req.body.timeZone;
+  // let z = req.body.timeZone;
 
-  resArr.push(rdate);
-  resArr.push(dur);
-  resArr.push(z);
-  res.send(resArr);
+  // resArr.push(rdate);
+  // resArr.push(dur);
+  // resArr.push(z);
+  res.send("Hello from server");
 });
+
+
 
 //for event 1
 app.put("/api/v1/event", async (req, res) => {
@@ -46,8 +52,9 @@ app.put("/api/v1/event", async (req, res) => {
        }`);
     return;
   }
-
+  //paramsDate = date.addDays(new Date(req.body.date),1);
   paramsDate = date.format(new Date(req.body.date), "YYYY/M/D");
+  //paramsDate = date.addDays(paramsDate,1);
   let receivedDate = paramsDate;
   paramsDate = date.transform(paramsDate, "YYYY/M/D", "D-M-YYYY"); //Changing the format of date
 
@@ -68,6 +75,7 @@ app.put("/api/v1/event", async (req, res) => {
       return;
     }
 
+    //let collRef = datesRef.collection(date.addDays(new Date(paramsDate),1));
     const collRef = datesRef.collection(paramsDate);
     console.log("Wait while api is trying to get documents from db");
     const availableSlots = await collRef.get();
@@ -173,14 +181,16 @@ app.patch("/api/v1/event", async (req, res) => {
   const paramsDuration = req.body.duration;
   if (!paramsDate || !paramsDuration) {
     res.status(400).send(`Bad request change parameters, format: {
-        "date": D-M-YYYY H:mm(eg: 22/11/2020 10:30),
+        "date": YYYY/M/D H:mm(eg: 2020/11/22 10:30),
         "duration": number in minutes(integer)}(eg: 40)
     }`);
     return;
   }
 
-  const receivedDate = date.transform(paramsDate, "D-M-YYYY H:mm", "D-M-YYYY");
-  const receivedTime = date.transform(paramsDate, "D-M-YYYY H:mm", "H:mm");
+  // const receivedDate = date.transform(paramsDate, "D-M-YYYY H:mm", "D-M-YYYY");
+  // const receivedTime = date.transform(paramsDate, "D-M-YYYY H:mm", "H:mm");
+  const receivedDate = date.transform(paramsDate, "YYYY/M/D H:mm", "D-M-YYYY");
+  const receivedTime = date.transform(paramsDate, "YYYY/M/D H:mm", "H:mm");
   let receivedDuration = parseInt(paramsDuration);
 
   let responseArray = [];
@@ -316,4 +326,7 @@ app.get("/api/v1/event/:startDate/:endDate", async (req, res) => {
     res.status(404).send(error);
   }
 });
-app.listen(8080, () => console.log("Listening"));
+
+
+
+app.listen(PORT, () => console.log(`Listening to port http://localhost:${PORT}`));
