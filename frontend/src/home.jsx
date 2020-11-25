@@ -1,6 +1,6 @@
 import axios from "axios"; // for calling apis
 import Calendar from "react-calendar"; // for calender
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "react-calendar/dist/Calendar.css";
 import "./App.css";
 function Home(props) {
@@ -25,12 +25,12 @@ function Home(props) {
   async function getSlots() {
     const input = {
       date: new Date(dateValue),
-      timeZone: timeZoneValue,
+      timeZone: timeZoneValue
     };
-    console.log(durationValue);
+    console.log(input.date);
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/v1/event`,
+        `https://hostingassignment.herokuapp.com/api/v1/event/`,
         input
       );
       setSlotsData(data);
@@ -43,14 +43,16 @@ function Home(props) {
   async function bookSlot(slot) {
     try {
       let inputArr = slot.replace("T", "").split(" ");
-      let dateAndTime = inputArr[0] + " " + inputArr[1];
+      let dateArr = inputArr[0].split("-");
+      let date = `${dateArr[2]}/${dateArr[1]}/${dateArr[0]}`;
+      let dateAndTime = date + " " + inputArr[1];
       let durationGiven = durationValue;
       const input = {
         date: dateAndTime,
-        duration: durationGiven,
+        duration: durationGiven
       };
       const { data } = await axios.patch(
-        "http://localhost:8080/api/v1/event",
+        "https://hostingassignment.herokuapp.com/api/v1/event/",
         input
       );
       console.log(data);
@@ -66,18 +68,17 @@ function Home(props) {
   return (
     <div className="outer">
       <div className="left">
-          <div className="lightStyle smallMargin">Pick A Date</div>
+        <div className="lightStyle smallMargin">Pick A Date</div>
         <Calendar className="smallMargin" onChange={onChangeInCalender} />
         <div className="smallMargin">
           <input
-          autocomplete="off"
+            autoComplete="off"
             placeholder="Duration in minutes"
             value={durationValue}
             onChange={onChangeInDuration}
             type="text"
             name="duration"
             id="duration"
-            
           />
         </div>
         <div className="smallMargin">
@@ -89,7 +90,7 @@ function Home(props) {
           </select>
         </div>
         <div className="smallMargin">
-          <button id="button" onClick={getSlots} className="button" >
+          <button id="button" onClick={getSlots} className="button">
             Get Available Slots
           </button>
         </div>

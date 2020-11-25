@@ -1,6 +1,6 @@
 import axios from "axios"; // for calling apis
 import Calendar from "react-calendar"; // for calender
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "react-calendar/dist/Calendar.css";
 function GetEvents() {
   const [dateValue, setDateValue] = useState(new Date());
@@ -14,7 +14,7 @@ function GetEvents() {
       console.log(dateValue[0]);
       console.log(dateValue[1]);
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/event/${dateValue[0]}/${dateValue[1]}`
+        `https://hostingassignment.herokuapp.com/api/v1/event/${dateValue[0]}/${dateValue[1]}`
       );
       setEvents(data);
     } catch (error) {
@@ -25,7 +25,7 @@ function GetEvents() {
     <div className="outer">
       <div className="left">
         <Calendar
-        className="smallMargin"
+          className="smallMargin"
           onChange={onCalenderChange}
           selectRange={true}
           returnValue="range"
@@ -38,7 +38,9 @@ function GetEvents() {
       </div>
       <div className="right">
         {events.map((event) => (
-          <div key={event} className="box">{event}</div>
+          <div key={event} className="box">
+            {event}
+          </div>
         ))}
       </div>
     </div>
