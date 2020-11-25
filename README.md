@@ -16,16 +16,27 @@ Go to http://localhost:3000 for Event 1(To see available Slots and Book Free Slo
 Go to http://localhost:3000/events for Event 2(To get events from a selected range of dates).
 
 If you want to test using postman, use the following input format
-# Event 1:(PUT)
+# Event 1:(PUT) - URL: https://hostingassignment.herokuapp.com/api/v1/event/ (To see available free slots OR to create new slots if it's a new date)
 {
-      "date": "YYYY/M/D"(eg: "2020/11/26"),
-        "timeZone": "+/-:HH:mm"(eg: "+:05:30"
-    }
-
-# Event2:(PATCH)
-{
-"date": "D-M-YYYY H:mm"(eg: 22/11/2020 10:30),
-"duration": number in minutes(integer)}(eg: 40)
+      "date": "YYYY/M/D",
+      "timeZone": "+/-:HH:mm"
 }
-# Event3(GET):
-pass in url inthe format "Fri Nov 27 2020 23:59:59 GMT+0530 (India Standard Time)"
+eg:
+{
+      "date": "2020/11/26",
+      "timeZone": "+:05:30"
+}
+# Event2:(PATCH) - URL: https://hostingassignment.herokuapp.com/api/v1/event/ (To book a slot)
+{
+      "date": "YYYY/M/D H:mm",
+      "duration": number in minutes(integer)
+}
+eg: 
+{
+      "date": "2020/11/26 10:30",
+      "duration": 40
+}
+# Event3(GET):(To get events between range of dates) 
+Format, URL: https://hostingassignment.herokuapp.com/api/v1/event/YYYY-M-D/YYYY-M-D
+eg: https://hostingassignment.herokuapp.com/api/v1/event/2020-11-26/2020-11-27
+
